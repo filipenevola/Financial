@@ -89,11 +89,8 @@ public class UserController extends MultiActionController {
 				request.getSession().setAttribute("login", user);
 			}
 
-			Map<String, Object> modelMap = new HashMap<String, Object>(2);
-			Map<String, Object> errors = new HashMap<String, Object>(1);
-			errors.put("reason", "Login failed.Try again");
+			Map<String, Object> modelMap = new HashMap<String, Object>();
 			modelMap.put("success", loginSuccess);
-			modelMap.put("errors", errors);
 
 			return new ModelAndView("jsonView", modelMap);
 		} catch (Exception e) {
@@ -101,7 +98,6 @@ public class UserController extends MultiActionController {
 			return util.getModelMapError("Error trying login user.");
 		}
 	}
-
 
 	public void setUserService(UserService userService) {
 		this.userService = userService;
