@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean name="util" class="com.filipenevola.util.Util" />
+	<bean name="dao" class="com.filipenevola.dao.DAO" />
+	
+	<bean name="categoryDAO" class="com.filipenevola.dao.CategoryDAO" >
+		<property name="dao">
+			<ref bean="dao"/>
+		</property>
+	</bean>
+	
+	<bean name="categoryService" class="com.filipenevola.service.CategoryService" >
+		<property name="categoryDAO">
+			<ref bean="categoryDAO"/>
+		</property> 
+		<property name="util">
+			<ref bean="util"/>
+		</property>
+	</bean>
+
+	<bean id="categoryController" class="com.filipenevola.web.CategoryController">
+		<property name="userService">
+			<ref bean="userService"/>
+		</property> 
+		<property name="categoryService">
+			<ref bean="categoryService"/>
+		</property> 
+		<property name="util">
+			<ref bean="util"/>
+		</property>
+	</bean>
+	
+	<bean name="emailService" class="com.filipenevola.service.EmailService" >
+	</bean>
+	
+	<bean name="moveDAO" class="com.filipenevola.dao.MoveDAO" >
+		<property name="util">
+			<ref bean="util"/>
+		</property>
+		<property name="dao">
+			<ref bean="dao"/>
+		</property>
+	</bean>
+	
+	<bean name="moveService" class="com.filipenevola.service.MoveService" >
+		<property name="moveDAO">
+			<ref bean="moveDAO"/>
+		</property> 
+		<property name="emailService">
+			<ref bean="emailService"/>
+		</property> 
+		<property name="util">
+			<ref bean="util"/>
+		</property>
+	</bean>
+
+	<bean id="moveController" class="com.filipenevola.web.MoveController">
+		<property name="moveService">
+			<ref bean="moveService"/>
+		</property> 
+		<property name="util">
+			<ref bean="util"/>
+		</property>
+	</bean>
+	
+	<bean name="collectiveBuyDAO" class="com.filipenevola.dao.CollectiveBuyDAO" >
+		<property name="util">
+			<ref bean="util"/>
+		</property>
+		<property name="dao">
+			<ref bean="dao"/>
+		</property>
+	</bean>
+	
+	<bean name="collectiveBuyService" class="com.filipenevola.service.CollectiveBuyService" >
+		<property name="collectiveBuyDAO">
+			<ref bean="collectiveBuyDAO"/>
+		</property> 
+		<property name="userDAO">
+			<ref bean="userDAO"/>
+		</property> 
+		<property name="emailService">
+			<ref bean="emailService"/>
+		</property> 
+		<property name="util">
+			<ref bean="util"/>
+		</property>
+	</bean>
+
+	<bean id="collectiveBuyController" class="com.filipenevola.web.CollectiveBuyController">
+		<property name="collectiveBuyService">
+			<ref bean="collectiveBuyService"/>
+		</property> 
+		<property name="util">
+			<ref bean="util"/>
+		</property>
+	</bean>
+	
+	<bean name="userDAO" class="com.filipenevola.dao.UserDAO" >
+		<property name="dao">
+			<ref bean="dao"/>
+		</property>
+	</bean>
+	
+	<bean name="userService" class="com.filipenevola.service.UserService" >
+		<property name="userDAO">
+			<ref bean="userDAO"/>
+		</property> 
+		<property name="util">
+			<ref bean="util"/>
+		</property>
+	</bean>
+
+	<bean id="userController" class="com.filipenevola.web.UserController">
+		<property name="userService">
+			<ref bean="userService"/>
+		</property> 
+		<property name="util">
+			<ref bean="util"/>
+		</property>
+	</bean>
+	
+	<bean name="typeOfPayDAO" class="com.filipenevola.dao.TypeOfPayDAO" >
+		<property name="dao">
+			<ref bean="dao"/>
+		</property>
+	</bean>
+	
+	<bean name="typeOfPayService" class="com.filipenevola.service.TypeOfPayService" >
+		<property name="typeOfPayDAO">
+			<ref bean="typeOfPayDAO"/>
+		</property> 
+		<property name="util">
+			<ref bean="util"/>
+		</property>
+	</bean>
+
+	<bean id="typeOfPayController" class="com.filipenevola.web.TypeOfPayController">
+		<property name="userService">
+			<ref bean="userService"/>
+		</property> 
+		<property name="typeOfPayService">
+			<ref bean="typeOfPayService"/>
+		</property> 
+		<property name="util">
+			<ref bean="util"/>
+		</property>
+	</bean>
+	
+	<bean name="investimentDAO" class="com.filipenevola.dao.InvestimentDAO" >
+		<property name="dao">
+			<ref bean="dao"/>
+		</property>
+		<property name="util">
+			<ref bean="util"/>
+		</property>
+	</bean>
+	
+	<bean name="investimentService" class="com.filipenevola.service.InvestimentService" >
+		<property name="investimentDAO">
+			<ref bean="investimentDAO"/>
+		</property> 
+		<property name="util">
+			<ref bean="util"/>
+		</property>
+	</bean>
+
+	<bean id="investimentController" class="com.filipenevola.web.InvestimentController">
+		<property name="investimentService">
+			<ref bean="investimentService"/>
+		</property> 
+		<property name="util">
+			<ref bean="util"/>
+		</property>
+	</bean>
+	
+	<bean name="chartService" class="com.filipenevola.service.ChartService" >
+		<property name="moveDAO">
+			<ref bean="moveDAO"/>
+		</property>
+		<property name="util">
+			<ref bean="util"/>
+		</property>
+	</bean>
+
+	<bean id="chartController" class="com.filipenevola.web.ChartController">
+		<property name="chartService">
+			<ref bean="chartService"/>
+		</property> 
+		<property name="util">
+			<ref bean="util"/>
+		</property>
+	</bean>
+	
+	<bean name="calculationService" class="com.filipenevola.service.CalculationService" >
+		<property name="moveDAO">
+			<ref bean="moveDAO"/>
+		</property>
+		<property name="util">
+			<ref bean="util"/>
+		</property>
+	</bean>
+
+	<bean id="calculationController" class="com.filipenevola.web.CalculationController">
+		<property name="calculationService">
+			<ref bean="calculationService"/>
+		</property> 
+		<property name="util">
+			<ref bean="util"/>
+		</property>
+	</bean>
+	
+	<!-- Quartz config -->
+	<!-- Scheduler task -->
+	<bean name="schedulerTask" class="com.filipenevola.quartz.SchedulerTask">
+		<property name="collectiveBuyService">
+			<ref bean="collectiveBuyService"/>
+		</property> 		
+	</bean>
+ 
+	<!-- Scheduler job -->
+	<bean name="schedulerJob"
+		class="org.springframework.scheduling.quartz.JobDetailBean">
+ 
+		<property name="jobClass" value="com.filipenevola.quartz.SchedulerJob" />
+ 
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="schedulerTask" value-ref="schedulerTask" />
+			</map>
+		</property>
+	</bean>
+ 
+	<!-- Cron Trigger -->
+	<bean id="cronTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerBean">
+ 
+		<property name="jobDetail" ref="schedulerJob" />
+		<property name="cronExpression" value="0 0 5 * * ?" />
+ 
+	</bean>
+ 
+	<!-- Scheduler -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="jobDetails">
+			<list>
+				<ref bean="schedulerJob" />
+			</list>
+		</property>
+ 
+		<property name="triggers">
+			<list>
+				<ref bean="cronTrigger" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="handlerMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping" >
+		<property name="mappings">
+			<props>
+				<prop key="/category/*">categoryController</prop>
+				<prop key="/move/*">moveController</prop>
+				<prop key="/user/*">userController</prop>
+				<prop key="/typeOfPay/*">typeOfPayController</prop>
+				<prop key="/chart/*">chartController</prop>
+				<prop key="/investiment/*">investimentController</prop>
+				<prop key="/calculation/*">calculationController</prop>
+				<prop key="/collectiveBuy/*">collectiveBuyController</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- misc -->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+		<property name="suffix" value=".jsp"/>
+	</bean>
+	
+	<!-- json -->
+	<bean id="xmlFileViewResolver" class="org.springframework.web.servlet.view.XmlViewResolver">
+		<property name="location">
+			<value>/WEB-INF/views.xml</value>
+		</property>
+		<property name="order">
+			<value>1</value>
+		</property>
+	</bean>   
+      
+</beans>
