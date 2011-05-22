@@ -423,6 +423,11 @@ public class Util {
 		return ret;
 	}
 
+	public String getFormatedStringTodayMonthYear() {
+		String ret = getFormatedStringTodayDate();
+		return ret.split("/")[0] + "/" + ret.split("/")[1];
+	}
+
 	public String getFormatedString(Date date) {
 		String ret = null;
 		ret = dfString.format(date);

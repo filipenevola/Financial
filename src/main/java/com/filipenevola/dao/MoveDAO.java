@@ -2,10 +2,14 @@ package com.filipenevola.dao;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.filipenevola.chart.RadarItem;
+import com.filipenevola.chart.RadarItemCategory;
 import com.filipenevola.model.Category;
 import com.filipenevola.model.Move;
 import com.filipenevola.model.Users;
@@ -22,6 +26,102 @@ public class MoveDAO {
 	private DAO dao;
 
 	public MoveDAO() {
+	}
+
+	public List<Category> getCategories(Users user) {
+		@SuppressWarnings("unchecked")
+		List<Category> categories = dao.selectByQueryList(
+				"FROM Category c WHERE c.users = ?1 ORDER BY c.name", user);
+		return categories;
+
+	}
+
+	public List<RadarItem> sumByMonthByCategory(Users user,
+			List<Integer> categoriesId, Boolean pay) {
+		List<Category> categories = getCategories(user);
+		Map<Category, Integer> mapCat = new HashMap<Category, Integer>();
+		int number = 1;
+		String ids = "";
+		for (Category c : categories) {
+			if (categoriesId.contains(c.getId())) {
+				ids += c.getId();
+				ids += ",";
+				mapCat.put(c, number);
+				number++;
+			}
+		}
+		ids = ids.substring(0, ids.length() -1);
+		
+		String monthYear = util.getFormatedStringTodayMonthYear();
+		String year = monthYear.split("/")[0];
+		int yearInt = Integer.valueOf(year);
+		String month = monthYear.split("/")[1];
+		int monthInt = Integer.valueOf(month);
+		if (month.length() < 2)
+			month = "0" + month;
+
+		List<RadarItem> list = new ArrayList<RadarItem>();
+
+		for (int j = 0; j < 12; ++j) {
+
+			String start = year + "/" + month + "/01";
+			String end = year + "/" + month + "/31";
+
+			@SuppressWarnings("rawtypes")
+			Object[] objs = ((List) dao
+					.selectByQueryList(
+							"SELECT sum(m.value), m.category.id FROM Move m WHERE ((m.category.users = ?1) AND (m.category.pay = ?2) AND (m.dateOfPay >= ?3 AND m.dateOfPay <= ?4)) AND m.category.id IN (" +
+							ids + ") GROUP BY m.category.id ORDER BY m.category.id",
+							user, pay, start, end)).toArray();
+
+			Map<Integer, Double> mapCatIdSum = new HashMap<Integer, Double>();
+			LOG.info("Mês: " + month + "/" + year);
+			for (int i = 0; i < objs.length; i++) {
+				// String name = (String) ((Object[]) objs[i])[1];
+				Integer id = (Integer) ((Object[]) objs[i])[1];
+				Double sum = (Double) ((Object[]) objs[i])[0];
+				LOG.info("Nome: " + id + ", Soma: " + sum);
+				mapCatIdSum.put(id, sum);
+			}
+
+			List<RadarItemCategory> listItems = new ArrayList<RadarItemCategory>();
+			for (Category c : mapCat.keySet()) {
+				Integer numberCat = mapCat.get(c);
+				Double sum = mapCatIdSum.get(c.getId());
+				sum = sum == null ? 0 : sum;
+				RadarItemCategory ric = new RadarItemCategory();
+				ric.setCategory(getCatWithNumber(c, numberCat));
+				ric.setName(c.getName());
+				ric.setValue(sum);
+				listItems.add(ric);
+			}
+
+			RadarItem radarItem = new RadarItem();
+			radarItem.setMonthYear(month + "/" + year);
+			radarItem.setList(listItems);
+			list.add(radarItem);
+
+			monthInt--;
+			if (monthInt == 0) {
+				monthInt = 12;
+				yearInt--;
+			}
+
+			year = Integer.toString(yearInt);
+			month = "";
+			if (monthInt < 10) {
+				month += "0";
+			}
+			month += Integer.toString(monthInt);
+
+		}
+
+		return list;
+	}
+
+	public String getCatWithNumber(Category cat, Integer number) {
+		// return (cat.getName() + "(" + cat.getId() + ")").trim();
+		return "cat" + number;
 	}
 
 	/**

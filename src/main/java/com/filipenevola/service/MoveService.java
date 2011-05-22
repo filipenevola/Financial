@@ -2,11 +2,14 @@ package com.filipenevola.service;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.filipenevola.chart.RadarItem;
 import com.filipenevola.dao.MoveDAO;
+import com.filipenevola.model.Category;
 import com.filipenevola.model.Move;
 import com.filipenevola.model.Users;
 import com.filipenevola.util.Util;
@@ -24,6 +27,15 @@ public class MoveService {
 	private MoveDAO moveDAO;
 	private EmailService emailService;
 	private Util util;
+
+	public List<RadarItem> sumByMonthByCategory(Users user, Integer[] categories, Boolean pay) {
+		
+		return moveDAO.sumByMonthByCategory(user, Arrays.asList(categories), pay);
+	}
+
+	public List<Category> getCategories(Users user) {
+		return moveDAO.getCategories(user);
+	}
 
 	/**
 	 * Get all moves
@@ -100,7 +112,7 @@ public class MoveService {
 				&& moveThread.getSendNotification()
 				&& moveThread.getCategory().getNotificationList() != null
 				&& moveThread.getCategory().getNotificationList().length() > 0) {
-					emailService.sendMove(newMove, moveThread, add);
+			emailService.sendMove(newMove, moveThread, add);
 		}
 	}
 

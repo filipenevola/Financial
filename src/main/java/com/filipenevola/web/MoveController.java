@@ -11,6 +11,8 @@ import org.apache.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
+import com.filipenevola.chart.RadarItem;
+import com.filipenevola.model.Category;
 import com.filipenevola.model.Move;
 import com.filipenevola.model.Users;
 import com.filipenevola.service.MoveService;
@@ -53,7 +55,8 @@ public class MoveController extends MultiActionController {
 			String field = (String) request.getSession().getAttribute("field");
 			String value = (String) request.getSession().getAttribute("value");
 			Integer total = moveService.getTotalMove(user, field, value);
-			List<Move> moves = moveService.getMoveList(user, start, pageSize, field, value);
+			List<Move> moves = moveService.getMoveList(user, start, pageSize,
+					field, value);
 			return util.getModelMapPaging(moves, total);
 		} catch (Exception e) {
 			LOG.error("Error trying to retrieve moves.", e);
@@ -153,7 +156,8 @@ public class MoveController extends MultiActionController {
 			return util.getModelMap(moves);
 		} catch (Exception e) {
 			LOG.error("Error trying to retrieve moves by month.", e);
-			return util.getModelMapError("Error trying to retrieve moves by month.");
+			return util
+					.getModelMapError("Error trying to retrieve moves by month.");
 		}
 	}
 
@@ -169,6 +173,43 @@ public class MoveController extends MultiActionController {
 			return util.getModelMapError("Error trying to set month.");
 		}
 		return null;
+	}
+
+	public ModelAndView radarCategories(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		try {
+			Users user = util.getUserLogged(request);
+			if (user == null) {
+				return util.getModelMapError("Nobody logged.");
+			}
+
+			List<Category> list = moveService.getCategories(user);
+			return util.getModelMap(list);
+		} catch (Exception e) {
+			LOG.error("Error trying to set month.", e);
+			return util.getModelMapError("Error trying to set month.");
+		}
+	}
+
+	public ModelAndView radar(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		try {
+			Users user = util.getUserLogged(request);
+			if (user == null) {
+				return util.getModelMapError("Nobody logged.");
+			}
+
+			Integer[] categories = new Integer[] {
+					Integer.valueOf(request.getParameter("cat1")),
+					Integer.valueOf(request.getParameter("cat2")),
+					Integer.valueOf(request.getParameter("cat3")) };
+			List<RadarItem> list = moveService.sumByMonthByCategory(user, categories, true);
+
+			return util.getModelMap(list);
+		} catch (Exception e) {
+			LOG.error("Error trying to set month.", e);
+			return util.getModelMapError("Error trying to set month.");
+		}
 	}
 
 	/**
