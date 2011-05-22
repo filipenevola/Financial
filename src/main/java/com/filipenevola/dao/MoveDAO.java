@@ -2,6 +2,7 @@ package com.filipenevola.dao;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,6 +116,8 @@ public class MoveDAO {
 			month += Integer.toString(monthInt);
 
 		}
+		
+		Collections.reverse(list);
 
 		return list;
 	}
