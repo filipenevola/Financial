@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.filipenevola.chart.DataItem;
 import com.filipenevola.chart.RadarItem;
 import com.filipenevola.chart.RadarItemCategory;
 import com.filipenevola.model.Category;
@@ -37,6 +38,34 @@ public class MoveDAO {
 
 	}
 
+	public List<DataItem> movesDataByCategoryAndMonth(Users user,
+			String monthYear, Integer categoryId) {
+
+		String month = monthYear.split("/")[0];
+		if (month.length() == 1) {
+			month = "0" + month;
+		}
+		String year = monthYear.split("/")[1];
+		String start = year + "/" + month + "/01";
+		String end = year + "/" + month + "/31";
+
+		@SuppressWarnings("rawtypes")
+		Object[] objs = ((List) dao
+				.selectByQueryList(
+						"SELECT m.value, m.name FROM Move m WHERE ((m.category.id = ?1) AND (m.dateOfPay >= ?2 AND m.dateOfPay <= ?3)) ORDER BY m.category.name",
+						categoryId, start, end)).toArray();
+
+		List<DataItem> list = new ArrayList<DataItem>();
+		LOG.info("Mês: " + month + "/" + year);
+		for (int i = 0; i < objs.length; i++) {
+			String name = (String) ((Object[]) objs[i])[1];
+			Double value = (Double) ((Object[]) objs[i])[0];
+			LOG.info("Nome: " + name + ", value: " + value);
+			list.add(new DataItem(value, name));
+		}
+		return list;
+	}
+
 	public List<RadarItem> sumByMonthByCategory(Users user,
 			List<Integer> categoriesId, Boolean pay) {
 		List<Category> categories = getCategories(user);
@@ -51,8 +80,8 @@ public class MoveDAO {
 				number++;
 			}
 		}
-		ids = ids.substring(0, ids.length() -1);
-		
+		ids = ids.substring(0, ids.length() - 1);
+
 		String monthYear = util.getFormatedStringTodayMonthYear();
 		String year = monthYear.split("/")[0];
 		int yearInt = Integer.valueOf(year);
@@ -71,8 +100,9 @@ public class MoveDAO {
 			@SuppressWarnings("rawtypes")
 			Object[] objs = ((List) dao
 					.selectByQueryList(
-							"SELECT sum(m.value), m.category.id FROM Move m WHERE ((m.category.users = ?1) AND (m.category.pay = ?2) AND (m.dateOfPay >= ?3 AND m.dateOfPay <= ?4)) AND m.category.id IN (" +
-							ids + ") GROUP BY m.category.id ORDER BY m.category.id",
+							"SELECT sum(m.value), m.category.id FROM Move m WHERE ((m.category.users = ?1) AND (m.category.pay = ?2) AND (m.dateOfPay >= ?3 AND m.dateOfPay <= ?4)) AND m.category.id IN ("
+									+ ids
+									+ ") GROUP BY m.category.id ORDER BY m.category.id",
 							user, pay, start, end)).toArray();
 
 			Map<Integer, Double> mapCatIdSum = new HashMap<Integer, Double>();
@@ -91,8 +121,8 @@ public class MoveDAO {
 				Double sum = mapCatIdSum.get(c.getId());
 				sum = sum == null ? 0 : sum;
 				RadarItemCategory ric = new RadarItemCategory();
-				ric.setCategory(getCatWithNumber(c, numberCat));
-				ric.setName(c.getName());
+				ric.setCategoryNumber(getCatWithNumber(c, numberCat));
+				ric.setCategory(c);
 				ric.setValue(sum);
 				listItems.add(ric);
 			}
@@ -116,7 +146,7 @@ public class MoveDAO {
 			month += Integer.toString(monthInt);
 
 		}
-		
+
 		Collections.reverse(list);
 
 		return list;

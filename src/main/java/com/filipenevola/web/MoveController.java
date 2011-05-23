@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
+import com.filipenevola.chart.DataItem;
 import com.filipenevola.chart.RadarItem;
 import com.filipenevola.model.Category;
 import com.filipenevola.model.Move;
@@ -204,6 +205,26 @@ public class MoveController extends MultiActionController {
 					Integer.valueOf(request.getParameter("cat2")),
 					Integer.valueOf(request.getParameter("cat3")) };
 			List<RadarItem> list = moveService.sumByMonthByCategory(user, categories, true);
+
+			return util.getModelMap(list);
+		} catch (Exception e) {
+			LOG.error("Error trying to set month.", e);
+			return util.getModelMapError("Error trying to set month.");
+		}
+	}
+	
+	public ModelAndView movesCategoryMonthYear(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		try {
+			Users user = util.getUserLogged(request);
+			if (user == null) {
+				return util.getModelMapError("Nobody logged.");
+			}
+
+			String monthYear = request.getParameter("monthYear");
+			Integer categoryId = Integer.valueOf(request.getParameter("categoryId"));
+			
+			List<DataItem> list = moveService.movesDataByCategoryAndMonth(user, monthYear, categoryId);
 
 			return util.getModelMap(list);
 		} catch (Exception e) {

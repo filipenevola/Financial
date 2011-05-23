@@ -1,17 +1,11 @@
 package com.filipenevola.chart;
 
+import com.filipenevola.model.Category;
+
 public class RadarItemCategory {
-	private String category;
+	private String categoryNumber;
 	private Double value;
-	private String name;
-
-	public String getCategory() {
-		return category;
-	}
-
-	public void setCategory(String category) {
-		this.category = category;
-	}
+	private Category category;
 
 	public Double getValue() {
 		return value;
@@ -20,13 +14,20 @@ public class RadarItemCategory {
 	public void setValue(Double value) {
 		this.value = value;
 	}
-
-	public String getName() {
-		return name;
+	public String getCategoryNumber() {
+		return categoryNumber;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setCategoryNumber(String categoryNumber) {
+		this.categoryNumber = categoryNumber;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
 }

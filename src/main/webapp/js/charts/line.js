@@ -133,6 +133,7 @@ function loadRadarChart(cat1, cat2, cat3) {
 			
 			var fields = [];
 			var titles = [];
+			var categoryIds = [];
 			var data = [];
 			
 			var first = true;
@@ -145,10 +146,12 @@ function loadRadarChart(cat1, cat2, cat3) {
 				
 				Ext.each(monthData.list, function(monthItem, index) {
 					console.log("Nome: " + monthItem.name + ", Valor: " + monthItem.value);
-					dataItem[monthItem.category] = monthItem.value;
+					var catNumber = monthItem.categoryNumber;
+					dataItem[catNumber] = monthItem.value;
 					if (first) {
-						fields.push(monthItem.category);
-						titles[monthItem.category] = monthItem.name;
+						fields.push(catNumber);
+						titles[catNumber] = monthItem.category.name;
+						categoryIds[catNumber] = monthItem.category.id;
 					}
 				});
 				
@@ -161,6 +164,59 @@ function loadRadarChart(cat1, cat2, cat3) {
 				fields : fields,
 				data : data
 			});
+			
+
+			var gridStore = Ext.create('Ext.data.JsonStore', {
+				fields : [ 'name', 'data' ]
+			});
+			
+			var contadorTest = 0;
+			
+			var chartTip = Ext.create('Ext.tip.ToolTip', {
+                trackMouse: true,
+                width: 580,
+                autoHeight: true,
+                layout: 'fit',
+                renderer: function(klass, item) {
+                	var seriesItem = item.series;
+                	var seriesItemId = seriesItem.id;
+                	var storeItem = item.storeItem;
+                	var dataItem = storeItem.data;
+                	var valueCat = dataItem[seriesItemId];
+                	var valueCatFmt = Ext.util.Format.number(valueCat, '0,0.00');
+                	var monthCat = dataItem["name"];
+                    this.setTitle("Information for " + titles[seriesItemId] + " (" + monthCat + ")");
+                    this.remove('panelTip');
+                    var x = this;
+                    Ext.Ajax.request({
+                		url : 'move/movesCategoryMonthYear.action',
+                		params : {
+                			monthYear : monthCat,
+                			categoryId : categoryIds[seriesItemId]
+                		},
+                		success : function(result) {
+                			var json3 = Ext.decode(result.responseText);
+                			
+                			var jsonData2 = json3.data;
+		                    gridStore.loadData(jsonData2);
+		                    x.add(Ext.create('Ext.grid.Panel', {
+		                    	id: 'panelTip',
+		                    	title: "Total: " + valueCatFmt,
+		        				store : gridStore,
+		                        autoHeight: true,
+		        				columns : [ {
+		        					text : 'name',
+		        					dataIndex : 'name'
+		        				}, {
+		        					text : 'data',
+		        					dataIndex : 'data'
+		        				} ]
+		        			}));
+                		}
+                    });
+                }
+            });
+			
 			destroyWindow();
 			Ext.create('Ext.Window', {
 				id: 'chartWindow',
@@ -208,6 +264,7 @@ function loadRadarChart(cat1, cat2, cat3) {
 		                title: 'Month of the Year'
 		            }],
 		            series: [{
+		            	id: 'cat1',
 		                type: 'line',
 		                highlight: {
 		                    size: 7,
@@ -222,8 +279,10 @@ function loadRadarChart(cat1, cat2, cat3) {
 		                    size: 4,
 		                    radius: 4,
 		                    'stroke-width': 0
-		                }
+		                },
+		                tips: chartTip
 		            }, {
+		            	id: 'cat2',
 		                type: 'line',
 		                highlight: {
 		                    size: 7,
@@ -239,8 +298,10 @@ function loadRadarChart(cat1, cat2, cat3) {
 		                    size: 4,
 		                    radius: 4,
 		                    'stroke-width': 0
-		                }
+		                },
+		                tips: chartTip
 		            }, {
+		            	id: 'cat3',
 		                type: 'line',
 		                highlight: {
 		                    size: 7,
@@ -257,7 +318,8 @@ function loadRadarChart(cat1, cat2, cat3) {
 		                    size: 4,
 		                    radius: 4,
 		                    'stroke-width': 0
-		                }
+		                },
+		                tips: chartTip
 		            }]
 		        }
 		    });

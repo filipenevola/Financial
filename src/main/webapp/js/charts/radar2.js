@@ -145,10 +145,10 @@ function loadRadarChart(cat1, cat2, cat3) {
 				
 				Ext.each(monthData.list, function(monthItem, index) {
 					console.log("Nome: " + monthItem.name + ", Valor: " + monthItem.value);
-					dataItem[monthItem.category] = monthItem.value;
+					dataItem[monthItem.categoryNumber] = monthItem.value;
 					if (first) {
-						fields.push(monthItem.category);
-						titles[monthItem.category] = monthItem.name;
+						fields.push(monthItem.categoryNumber);
+						titles[monthItem.categoryNumber] = monthItem.category.name;
 					}
 				});
 				

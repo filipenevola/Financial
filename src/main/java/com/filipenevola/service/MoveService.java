@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.filipenevola.chart.DataItem;
 import com.filipenevola.chart.RadarItem;
 import com.filipenevola.dao.MoveDAO;
 import com.filipenevola.model.Category;
@@ -28,9 +29,11 @@ public class MoveService {
 	private EmailService emailService;
 	private Util util;
 
-	public List<RadarItem> sumByMonthByCategory(Users user, Integer[] categories, Boolean pay) {
-		
-		return moveDAO.sumByMonthByCategory(user, Arrays.asList(categories), pay);
+	public List<RadarItem> sumByMonthByCategory(Users user,
+			Integer[] categories, Boolean pay) {
+
+		return moveDAO.sumByMonthByCategory(user, Arrays.asList(categories),
+				pay);
 	}
 
 	public List<Category> getCategories(Users user) {
@@ -147,6 +150,11 @@ public class MoveService {
 		}
 	}
 
+	public List<DataItem> movesDataByCategoryAndMonth(Users user,
+			String monthYear, Integer categoryId) {
+		return moveDAO.movesDataByCategoryAndMonth(user, monthYear, categoryId);
+	}
+
 	public List<Move> movesByMonth(Users user, String month, Integer dateType) {
 		return moveDAO.movesOfMonth(user, month, dateType);
 	}
@@ -172,5 +180,4 @@ public class MoveService {
 	public void setUtil(Util util) {
 		this.util = util;
 	}
-
 }
