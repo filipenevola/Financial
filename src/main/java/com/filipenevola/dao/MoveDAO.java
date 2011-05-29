@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.filipenevola.chart.DataItem;
 import com.filipenevola.chart.RadarItem;
@@ -20,11 +22,14 @@ import com.filipenevola.util.Util;
 /**
  * @author Filipe Névola
  */
+@Repository
 public class MoveDAO {
 	private static Logger LOG = Logger.getLogger(MoveDAO.class);
 
+	@Autowired
 	private Util util;
 
+	@Autowired
 	private DAO dao;
 
 	public MoveDAO() {
@@ -156,12 +161,6 @@ public class MoveDAO {
 		// return (cat.getName() + "(" + cat.getId() + ")").trim();
 		return "cat" + number;
 	}
-
-	/**
-	 * Get List of moves
-	 * 
-	 * @return list of all moves
-	 */
 	@SuppressWarnings("unchecked")
 	public List<Move> getMoves(Users user, Integer start, Integer pageSize,
 			String field, String value) {
@@ -209,23 +208,10 @@ public class MoveDAO {
 		return llong.intValue();
 	}
 
-	/**
-	 * Delete a move with the id passed as parameter
-	 * 
-	 * @param id
-	 */
 	public void deleteMove(int id) {
 		Move move = findMove(id);
 		dao.remove(move);
 	}
-
-	/**
-	 * Create a new Move on the list/"database"
-	 * 
-	 * @param newMove
-	 * @return move added to DB
-	 * @throws ParseException
-	 */
 	public Move addMove(Move newMove) throws ParseException {
 		newMove.setDateOfMove(util.getFormatedString(newMove.getDateOfMove()));
 		newMove.setDateOfPay(util.getFormatedString(newMove.getDateOfPay()));
@@ -233,18 +219,6 @@ public class MoveDAO {
 		return newMove;
 	}
 
-	/**
-	 * Update a current Move on the list/"database". There are only updated
-	 * fields in the request (because of writeAllFields: false in Writer object
-	 * in ExtJS). When it transforms JSON data to a Move Bean, the non updated
-	 * fields remains null, that is why we have to verify which fields are not
-	 * null. If you do not want it, you can set writeAllFields to true and
-	 * overwrite the current object info with the new/updated info.
-	 * 
-	 * @param updatedMove
-	 * @return updated move
-	 * @throws ParseException
-	 */
 	public Move updateMove(Move updatedMove) throws ParseException {
 		updatedMove.setDateOfMove(util.getFormatedString(updatedMove
 				.getDateOfMove()));
@@ -254,38 +228,17 @@ public class MoveDAO {
 		return updatedMove;
 	}
 
-	/**
-	 * Find a move by id in moves list
-	 * 
-	 * @param id
-	 *            move id
-	 * @return move if found; null otherwise
-	 */
 	private Move findMove(Integer id) {
 		return (Move) dao.selectByQuerySingleResult(
 				"SELECT c FROM Move c WHERE id = ?1", id);
 	}
 
-	/**
-	 * Find a move by category
-	 * 
-	 * @param id
-	 *            move id
-	 * @return move if found; null otherwise
-	 */
 	@SuppressWarnings("unchecked")
 	public List<Move> findMoveByCategory(Category category) {
 		return (List<Move>) dao.selectByQueryList(
 				"SELECT c FROM Move c WHERE c.category = ?1", category);
 	}
 
-	/**
-	 * Find a move order by category
-	 * 
-	 * @param id
-	 *            move id
-	 * @return move if found; null otherwise
-	 */
 	@SuppressWarnings("unchecked")
 	public List<Move> findMoveOrderCategory(Users user) {
 		return (List<Move>) dao
@@ -363,13 +316,6 @@ public class MoveDAO {
 		return list;
 	}
 
-	/**
-	 * Find a move order by category between dates
-	 * 
-	 * @param id
-	 *            move id
-	 * @return move if found; null otherwise
-	 */
 	@SuppressWarnings("unchecked")
 	public List<Move> findMoveOrderCategoryBetweenDates(Users user,
 			String start, String end) {
@@ -377,24 +323,6 @@ public class MoveDAO {
 				.selectByQueryList(
 						"SELECT m FROM Move m WHERE ((m.category.users = ?1) AND (m.dateOfMove >= ?2 AND m.dateOfMove <= ?3) AND m.category.pay = ?4) ORDER BY m.category.name",
 						user, start, end, true);
-	}
-
-	/**
-	 * Spring use - DI
-	 * 
-	 * @param util
-	 */
-	public void setUtil(Util util) {
-		this.util = util;
-	}
-
-	/**
-	 * Spring use - DI
-	 * 
-	 * @param dao
-	 */
-	public void setDao(DAO dao) {
-		this.dao = dao;
 	}
 
 }

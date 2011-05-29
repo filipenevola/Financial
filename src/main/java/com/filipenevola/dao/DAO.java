@@ -6,9 +6,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import com.filipenevola.model.BaseEntity;
-
+@Component
 public class DAO {
 	private static final Long ERRO_COUNT = -1L;
 	private static Logger LOG = Logger.getLogger(DAO.class);

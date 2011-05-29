@@ -1,11 +1,13 @@
 package com.filipenevola.service;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
 
 import com.filipenevola.model.CollectiveBuy;
 import com.filipenevola.model.Move;
 import com.filipenevola.util.EnviaEmail;
 
+@Service
 public class EmailService {
 	private static Logger LOG = Logger.getLogger(EmailService.class);
 

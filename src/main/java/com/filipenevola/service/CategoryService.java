@@ -4,35 +4,29 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.filipenevola.dao.CategoryDAO;
 import com.filipenevola.model.Category;
 import com.filipenevola.model.Users;
 import com.filipenevola.util.Util;
 
 /**
- * Category Business Delegate
- * 
  * @author Filipe Névola
  */
+@Service
 public class CategoryService {
-	
+
+	@Autowired
 	private CategoryDAO categoryDAO;
+	@Autowired
 	private Util util;
 
-	/**
-	 * Get all categorys
-	 * @return
-	 */
 	public List<Category> getCategoryList(Users user){
 		return categoryDAO.getCategorys(user);
 	}
 	
-	/**
-	 * Create new Category/Categorys
-	 * @param data - json data from request
-	 * @return created categorys
-	 * @throws ParseException 
-	 */
 	public List<Category> create(Object data, Users user) throws ParseException{
 		
         List<Category> newCategorys = new ArrayList<Category>();
@@ -48,12 +42,6 @@ public class CategoryService {
 	}
 	
 	
-	/**
-	 * Update category/categorys
-	 * @param data - json data from request
-	 * @return updated categorys
-	 * @throws ParseException 
-	 */
 	public List<Category> update(Object data, Users user) throws ParseException{
 		
 		List<Category> returnCategorys = new ArrayList<Category>();		
@@ -66,10 +54,6 @@ public class CategoryService {
 		return returnCategorys;
 	}
 	
-	/**
-	 * Delete category/categorys
-	 * @param data - json data from request
-	 */
 	public void delete(Object data){
 		
 		//it is an array - have to cast to array object
@@ -86,20 +70,5 @@ public class CategoryService {
 	}
 	
 
-	/**
-	 * Spring use - DI
-	 * @param categoryDAO
-	 */
-	public void setCategoryDAO(CategoryDAO categoryDAO) {
-		this.categoryDAO = categoryDAO;
-	}
-
-	/**
-	 * Spring use - DI
-	 * @param util
-	 */
-	public void setUtil(Util util) {
-		this.util = util;
-	}
 	
 }

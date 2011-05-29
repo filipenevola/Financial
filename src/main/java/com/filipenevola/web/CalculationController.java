@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
@@ -14,9 +16,12 @@ import com.filipenevola.model.Users;
 import com.filipenevola.service.CalculationService;
 import com.filipenevola.util.Util;
 
+@Controller
 public class CalculationController  extends MultiActionController {
 
+	@Autowired
 	private CalculationService calculationService;
+	@Autowired
 	private Util util;
 	
 	public ModelAndView balanceMonth(HttpServletRequest request,
@@ -52,14 +57,4 @@ public class CalculationController  extends MultiActionController {
 		return new ModelAndView("jsonView", map);
 	}
 	
-	
-	public void setCalculationService(CalculationService calculationService) {
-		this.calculationService = calculationService;
-	}
-	public void setUtil(Util util) {
-		this.util = util;
-	}
-	
-	
-
 }

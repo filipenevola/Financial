@@ -3,15 +3,21 @@ package com.filipenevola.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.filipenevola.dao.MoveDAO;
 import com.filipenevola.model.Category;
 import com.filipenevola.model.Move;
 import com.filipenevola.model.Users;
 import com.filipenevola.util.Util;
 
+@Service
 public class CalculationService {
+	@Autowired
 	private MoveDAO moveDAO;
 
+	@Autowired
 	private Util util;
 
 	public List<Double> balanceMonth(Users user, String month) throws Exception {
@@ -59,13 +65,5 @@ public class CalculationService {
 		return sb.toString();
 	}
 	
-
-	public void setMoveDAO(MoveDAO moveDAO) {
-		this.moveDAO = moveDAO;
-	}
-
-	public void setUtil(Util util) {
-		this.util = util;
-	}
 
 }

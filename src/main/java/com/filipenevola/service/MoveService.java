@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.filipenevola.chart.DataItem;
 import com.filipenevola.chart.RadarItem;
@@ -15,18 +17,20 @@ import com.filipenevola.model.Move;
 import com.filipenevola.model.Users;
 import com.filipenevola.util.Util;
 
-/**
- * Move Business Delegate
- * 
+/** 
  * @author Filipe Névola
  */
+@Service
 public class MoveService {
 	private static Logger LOG = Logger.getLogger(MoveService.class);
 
 	private static final boolean NEW_MOVE = true;
 	private static final boolean UPDATED_MOVE = false;
+	@Autowired
 	private MoveDAO moveDAO;
+	@Autowired
 	private EmailService emailService;
+	@Autowired
 	private Util util;
 
 	public List<RadarItem> sumByMonthByCategory(Users user,
@@ -39,35 +43,16 @@ public class MoveService {
 	public List<Category> getCategories(Users user) {
 		return moveDAO.getCategories(user);
 	}
-
-	/**
-	 * Get all moves
-	 * 
-	 * @return
-	 */
 	public List<Move> getMoveList(Users user, Integer start, Integer pageSize,
 			String field, String value) {
 		LOG.info("getMoveList - field: " + field + ", value: " + value);
 		return moveDAO.getMoves(user, start, pageSize, field, value);
 	}
 
-	/**
-	 * Get all moves
-	 * 
-	 * @return
-	 */
 	public Integer getTotalMove(Users user, String field, String value) {
 		return moveDAO.getTotalMove(user, field, value);
 	}
 
-	/**
-	 * Create new Move/Moves
-	 * 
-	 * @param data
-	 *            - json data from request
-	 * @return created moves
-	 * @throws ParseException
-	 */
 	public List<Move> create(Object data) throws ParseException {
 
 		List<Move> newMoves = new ArrayList<Move>();
@@ -86,14 +71,6 @@ public class MoveService {
 		moveDAO.addMove(move);
 	}
 
-	/**
-	 * Update move/moves
-	 * 
-	 * @param data
-	 *            - json data from request
-	 * @return updated moves
-	 * @throws ParseException
-	 */
 	public List<Move> update(Object data) throws ParseException {
 
 		List<Move> returnMoves = new ArrayList<Move>();
@@ -119,12 +96,6 @@ public class MoveService {
 		}
 	}
 
-	/**
-	 * Delete move/moves
-	 * 
-	 * @param data
-	 *            - json data from request
-	 */
 	public void delete(Object data) {
 
 		// it is an array - have to cast to array object
@@ -159,25 +130,4 @@ public class MoveService {
 		return moveDAO.movesOfMonth(user, month, dateType);
 	}
 
-	/**
-	 * Spring use - DI
-	 * 
-	 * @param moveDAO
-	 */
-	public void setMoveDAO(MoveDAO moveDAO) {
-		this.moveDAO = moveDAO;
-	}
-
-	public void setEmailService(EmailService emailService) {
-		this.emailService = emailService;
-	}
-
-	/**
-	 * Spring use - DI
-	 * 
-	 * @param util
-	 */
-	public void setUtil(Util util) {
-		this.util = util;
-	}
 }

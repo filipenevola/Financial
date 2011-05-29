@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.filipenevola.model.CollectiveBuy;
 import com.filipenevola.model.Users;
@@ -12,11 +14,14 @@ import com.filipenevola.util.Util;
 /**
  * @author Filipe Névola
  */
+@Repository
 public class CollectiveBuyDAO {
 	private static Logger LOG = Logger.getLogger(CollectiveBuyDAO.class);
 
+	@Autowired
 	private Util util;
 
+	@Autowired
 	private DAO dao;
 
 	public CollectiveBuyDAO() {
@@ -104,14 +109,6 @@ public class CollectiveBuyDAO {
 	private CollectiveBuy findCollectiveBuy(Integer id) {
 		return (CollectiveBuy) dao.selectByQuerySingleResult(
 				"SELECT c FROM CollectiveBuy c WHERE id = ?1", id);
-	}
-
-	public void setUtil(Util util) {
-		this.util = util;
-	}
-
-	public void setDao(DAO dao) {
-		this.dao = dao;
 	}
 
 }

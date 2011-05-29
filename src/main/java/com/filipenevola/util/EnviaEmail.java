@@ -1,13 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.filipenevola.util;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +16,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EnviaEmail {
 	private static Logger LOG = Logger.getLogger(EnviaEmail.class);
 

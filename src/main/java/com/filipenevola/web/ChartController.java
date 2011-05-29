@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
@@ -18,9 +20,12 @@ import com.filipenevola.model.Users;
 import com.filipenevola.service.ChartService;
 import com.filipenevola.util.Util;
 
+@Controller
 public class ChartController extends MultiActionController {
 	private static Logger LOG = Logger.getLogger(ChartController.class);
+	@Autowired
 	private ChartService chartService;
+	@Autowired
 	private Util util;
 	
 	public ModelAndView categoryPay(HttpServletRequest request,
@@ -91,20 +96,4 @@ public class ChartController extends MultiActionController {
 
 		return null;
 	}
-	
-
-	public void setChartService(ChartService chartService) {
-		this.chartService = chartService;
-	}
-
-	/**
-	 * Spring use - DI
-	 * @param util
-	 */
-	public void setUtil(Util util) {
-		this.util = util;
-	}
-
-	
-
 }

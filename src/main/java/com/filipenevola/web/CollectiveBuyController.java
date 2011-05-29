@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
@@ -17,14 +20,15 @@ import com.filipenevola.service.CollectiveBuyService;
 import com.filipenevola.util.Util;
 
 /**
- * Controller - Spring
- * 
  * @author Filipe Névola
  */
+@Controller
 public class CollectiveBuyController extends MultiActionController {
 	private static Logger LOG = Logger.getLogger(CollectiveBuyController.class);
 
+	@Autowired
 	private CollectiveBuyService collectiveBuyService;
+	@Autowired
 	private Util util;
 
 	public ModelAndView view(HttpServletRequest request,
@@ -101,14 +105,5 @@ public class CollectiveBuyController extends MultiActionController {
 			return util
 					.getModelMapError("Error trying to delete collectiveBuy.");
 		}
-	}
-
-	public void setCollectiveBuyService(
-			CollectiveBuyService collectiveBuyService) {
-		this.collectiveBuyService = collectiveBuyService;
-	}
-
-	public void setUtil(Util util) {
-		this.util = util;
 	}
 }

@@ -17,6 +17,8 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.text.TextBlockAnchor;
 import org.jfree.ui.RectangleAnchor;
 import org.jfree.ui.TextAnchor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.filipenevola.chart.CategoryPay;
 import com.filipenevola.dao.MoveDAO;
@@ -24,9 +26,12 @@ import com.filipenevola.model.Move;
 import com.filipenevola.model.Users;
 import com.filipenevola.util.Util;
 
+@Service
 public class ChartService {
 	private static Logger LOG = Logger.getLogger(ChartService.class);
+	@Autowired
 	private MoveDAO moveDAO;
+	@Autowired
 	private Util util;
 
 	public void setMoveDAO(MoveDAO moveDAO) {
@@ -138,15 +143,6 @@ public class ChartService {
 		return chart;
 
 	}
-
-	/**
-	 * Creates a chart.
-	 * 
-	 * @param dataset
-	 *            the dataset.
-	 * 
-	 * @return The chart.
-	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
 
 		final JFreeChart chart = ChartFactory.createBarChart3D(
@@ -176,10 +172,6 @@ public class ChartService {
 
 		return chart;
 
-	}
-
-	public void setUtil(Util util) {
-		this.util = util;
 	}
 
 }

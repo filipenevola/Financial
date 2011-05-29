@@ -4,35 +4,29 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.filipenevola.dao.InvestimentDAO;
 import com.filipenevola.model.Investiment;
 import com.filipenevola.model.Users;
 import com.filipenevola.util.Util;
 
-/**
- * Investiment Business Delegate
- * 
+/** 
  * @author Filipe Névola
  */
+@Service
 public class InvestimentService {
-	
+
+	@Autowired
 	private InvestimentDAO investimentDAO;
+	@Autowired
 	private Util util;
 
-	/**
-	 * Get all investiments
-	 * @return
-	 */
 	public List<Investiment> getInvestimentList(Users user){
 		return investimentDAO.getInvestiments(user);
 	}
 	
-	/**
-	 * Create new Investiment/Investiments
-	 * @param data - json data from request
-	 * @return created investiments
-	 * @throws ParseException 
-	 */
 	public List<Investiment> create(Object data, Users user) throws ParseException{
 		
         List<Investiment> newInvestiments = new ArrayList<Investiment>();
@@ -47,13 +41,6 @@ public class InvestimentService {
 		return newInvestiments;
 	}
 	
-	
-	/**
-	 * Update investiment/investiments
-	 * @param data - json data from request
-	 * @return updated investiments
-	 * @throws ParseException 
-	 */
 	public List<Investiment> update(Object data) throws ParseException{
 		
 		List<Investiment> returnInvestiments = new ArrayList<Investiment>();
@@ -67,10 +54,6 @@ public class InvestimentService {
 		return returnInvestiments;
 	}
 	
-	/**
-	 * Delete investiment/investiments
-	 * @param data - json data from request
-	 */
 	public void delete(Object data){
 		
 		//it is an array - have to cast to array object
@@ -90,21 +73,5 @@ public class InvestimentService {
 		}
 	}
 	
-
-	/**
-	 * Spring use - DI
-	 * @param investimentDAO
-	 */
-	public void setInvestimentDAO(InvestimentDAO investimentDAO) {
-		this.investimentDAO = investimentDAO;
-	}
-
-	/**
-	 * Spring use - DI
-	 * @param util
-	 */
-	public void setUtil(Util util) {
-		this.util = util;
-	}
 	
 }

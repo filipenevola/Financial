@@ -18,6 +18,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.filipenevola.model.Category;
@@ -27,11 +28,7 @@ import com.filipenevola.model.Move;
 import com.filipenevola.model.TypeOfPay;
 import com.filipenevola.model.Users;
 
-/**
- * Util class. Contains some common methods that can be used for any class
- * 
- * @author Loiane Groner
- */
+@Component
 public class Util {
 	private static Logger LOG = Logger.getLogger(Util.class);
 
@@ -41,13 +38,6 @@ public class Util {
 
 	private static NumberFormat nfString = new DecimalFormat();
 
-	/**
-	 * Tranform array of numbers in json data format into list of Integer
-	 * 
-	 * @param data
-	 *            - json data from request
-	 * @return
-	 */
 	@SuppressWarnings("unchecked")
 	public List<Integer> getListIdFromJSON(Object data) {
 		JSONArray jsonArray = JSONArray.fromObject(data);
@@ -56,13 +46,6 @@ public class Util {
 		return idContacts;
 	}
 
-	/**
-	 * Get list of Contacts from request.
-	 * 
-	 * @param data
-	 *            - json data from request
-	 * @return list of Contacts
-	 */
 	public List<Category> getCategorysFromRequest(Object data) {
 		List<Category> list;
 		// it is an array - have to cast to array object
@@ -76,13 +59,6 @@ public class Util {
 		return list;
 	}
 
-	/**
-	 * Transform json data format into Contact object
-	 * 
-	 * @param data
-	 *            - json data from request
-	 * @return
-	 */
 	public Category getCategorysFromJSON(Object data) {
 		JSONObject jsonObject = JSONObject.fromObject(data);
 		Category newCategory = (Category) JSONObject.toBean(jsonObject,
@@ -90,13 +66,6 @@ public class Util {
 		return newCategory;
 	}
 
-	/**
-	 * Transform json data format into list of Contact objects
-	 * 
-	 * @param data
-	 *            - json data from request
-	 * @return
-	 */
 	@SuppressWarnings("unchecked")
 	public List<Category> getListCategorysFromJSON(Object data) {
 		JSONArray jsonArray = JSONArray.fromObject(data);
@@ -105,13 +74,6 @@ public class Util {
 		return newCategorys;
 	}
 
-	/**
-	 * Get list of Contacts from request.
-	 * 
-	 * @param data
-	 *            - json data from request
-	 * @return list of Contacts
-	 */
 	public List<TypeOfPay> getTypeOfPaysFromRequest(Object data) {
 		List<TypeOfPay> list;
 		// it is an array - have to cast to array object
@@ -125,13 +87,6 @@ public class Util {
 		return list;
 	}
 
-	/**
-	 * Transform json data format into Contact object
-	 * 
-	 * @param data
-	 *            - json data from request
-	 * @return
-	 */
 	public TypeOfPay getTypeOfPaysFromJSON(Object data) {
 		JSONObject jsonObject = JSONObject.fromObject(data);
 		TypeOfPay newTypeOfPay = (TypeOfPay) JSONObject.toBean(jsonObject,
@@ -139,13 +94,6 @@ public class Util {
 		return newTypeOfPay;
 	}
 
-	/**
-	 * Transform json data format into list of Contact objects
-	 * 
-	 * @param data
-	 *            - json data from request
-	 * @return
-	 */
 	@SuppressWarnings("unchecked")
 	public List<TypeOfPay> getListTypeOfPaysFromJSON(Object data) {
 		JSONArray jsonArray = JSONArray.fromObject(data);
@@ -154,13 +102,6 @@ public class Util {
 		return newTypeOfPays;
 	}
 
-	/**
-	 * Get list of Contacts from request.
-	 * 
-	 * @param data
-	 *            - json data from request
-	 * @return list of Contacts
-	 */
 	public List<Move> getMovesFromRequest(Object data) {
 		List<Move> list;
 		// it is an array - have to cast to array object
@@ -174,26 +115,12 @@ public class Util {
 		return list;
 	}
 
-	/**
-	 * Transform json data format into Contact object
-	 * 
-	 * @param data
-	 *            - json data from request
-	 * @return
-	 */
 	public Move getMovesFromJSON(Object data) {
 		JSONObject jsonObject = JSONObject.fromObject(data);
 		Move newMove = (Move) JSONObject.toBean(jsonObject, Move.class);
 		return newMove;
 	}
 
-	/**
-	 * Transform json data format into list of Contact objects
-	 * 
-	 * @param data
-	 *            - json data from request
-	 * @return
-	 */
 	@SuppressWarnings("unchecked")
 	public List<Move> getListMovesFromJSON(Object data) {
 		JSONArray jsonArray = JSONArray.fromObject(data);
@@ -202,13 +129,6 @@ public class Util {
 		return newMoves;
 	}
 
-	/**
-	 * Get list of Users from request.
-	 * 
-	 * @param data
-	 *            - json data from request
-	 * @return list of Users
-	 */
 	public List<Users> getUsersFromRequest(Object data) {
 		List<Users> list;
 		// it is an array - have to cast to array object
@@ -222,26 +142,12 @@ public class Util {
 		return list;
 	}
 
-	/**
-	 * Transform json data format into User object
-	 * 
-	 * @param data
-	 *            - json data from request
-	 * @return
-	 */
 	public Users getUsersFromJSON(Object data) {
 		JSONObject jsonObject = JSONObject.fromObject(data);
 		Users newUser = (Users) JSONObject.toBean(jsonObject, Users.class);
 		return newUser;
 	}
 
-	/**
-	 * Transform json data format into list of User objects
-	 * 
-	 * @param data
-	 *            - json data from request
-	 * @return
-	 */
 	@SuppressWarnings("unchecked")
 	public List<Users> getListUsersFromJSON(Object data) {
 		JSONArray jsonArray = JSONArray.fromObject(data);
@@ -250,13 +156,6 @@ public class Util {
 		return newUsers;
 	}
 
-	/**
-	 * Get list of Users from request.
-	 * 
-	 * @param data
-	 *            - json data from request
-	 * @return list of Users
-	 */
 	public List<Investiment> getInvestimentsFromRequest(Object data) {
 		List<Investiment> list;
 		// it is an array - have to cast to array object
@@ -270,13 +169,6 @@ public class Util {
 		return list;
 	}
 
-	/**
-	 * Transform json data format into User object
-	 * 
-	 * @param data
-	 *            - json data from request
-	 * @return
-	 */
 	public Investiment getInvestimentsFromJSON(Object data) {
 		JSONObject jsonObject = JSONObject.fromObject(data);
 		Investiment newInvestiment = (Investiment) JSONObject.toBean(
@@ -284,13 +176,6 @@ public class Util {
 		return newInvestiment;
 	}
 
-	/**
-	 * Transform json data format into list of User objects
-	 * 
-	 * @param data
-	 *            - json data from request
-	 * @return
-	 */
 	@SuppressWarnings("unchecked")
 	public List<Investiment> getListInvestimentsFromJSON(Object data) {
 		JSONArray jsonArray = JSONArray.fromObject(data);
@@ -327,12 +212,6 @@ public class Util {
 		return newMoves;
 	}
 
-	/**
-	 * Generates modelMap to return in the modelAndView
-	 * 
-	 * @param ? extends Object
-	 * @return
-	 */
 	public ModelAndView getModelMap(List<? extends Object> list) {
 		Map<String, Object> modelMap = new HashMap<String, Object>(3);
 		modelMap.put("total", list == null ? 0 : list.size());
@@ -341,12 +220,6 @@ public class Util {
 		return new ModelAndView("jsonView", modelMap);
 	}
 
-	/**
-	 * Generates modelMap to return in the modelAndView
-	 * 
-	 * @param ? extends Object
-	 * @return
-	 */
 	public ModelAndView getModelMapPaging(List<? extends Object> list,
 			Integer total) {
 		Map<String, Object> modelMap = new HashMap<String, Object>(3);
@@ -356,13 +229,6 @@ public class Util {
 		return new ModelAndView("jsonView", modelMap);
 	}
 
-	/**
-	 * Generates modelMap to return in the modelAndView in case of exception
-	 * 
-	 * @param msg
-	 *            message
-	 * @return
-	 */
 	public ModelAndView getModelMapError(String msg) {
 		Map<String, Object> modelMap = new HashMap<String, Object>(2);
 		modelMap.put("message", msg);
@@ -370,36 +236,12 @@ public class Util {
 		return new ModelAndView("jsonView", modelMap);
 	}
 
-	/**
-	 * Format a yyyy-MM-dd'T'HH:mm:ss string to MM/dd/yyyy string JSON date has
-	 * the following format: yyyy-MM-dd'T'HH:mm:ss
-	 * 
-	 * @param jsonDate
-	 * @return MM/dd/yyyy string date
-	 * @throws ParseException
-	 */
 	public String getFormatedString(String jsonDate) {
 		Date date = null;
 		try {
 			date = df.parse(jsonDate);
 		} catch (Exception e) {
-			// Map<String, Integer> months = new HashMap<String, Integer>();
-			// months.put("Jan", 1);
-			// months.put("Feb", 2);
-			// months.put("Mar", 3);
-			// months.put("Apr", 4);
-			// months.put("May", 5);
-			// months.put("Jun", 6);
-			// months.put("Jul", 7);
-			// months.put("Aug", 8);
-			// months.put("Set", 9);
-			// months.put("Oct", 10);
-			// months.put("Nov", 11);
-			// months.put("Dec", 12);
 			try {
-				// String d = months.get(jsonDate.split("/")[0]).toString();
-				// d += "/" + jsonDate.split("/")[1];
-				// d += "/" + jsonDate.split("/")[2];
 				date = dfString.parse(jsonDate);
 			} catch (Exception e2) {
 				LOG.error("Error while convert jsonDate: " + jsonDate, e2);
@@ -409,14 +251,6 @@ public class Util {
 		return dfString.format(date);
 	}
 
-	/**
-	 * Format a yyyy-MM-dd'T'HH:mm:ss string to MM/dd/yyyy string JSON date has
-	 * the following format: yyyy-MM-dd'T'HH:mm:ss
-	 * 
-	 * @param jsonDate
-	 * @return yyyy/MM/dd string date
-	 * @throws ParseException
-	 */
 	public String getFormatedStringTodayDate() {
 		String ret = null;
 		ret = dfString.format(Calendar.getInstance().getTime());
@@ -480,12 +314,6 @@ public class Util {
 		return null;
 	}
 
-	/**
-	 * Get logged user or null
-	 * 
-	 * @param request
-	 * @return
-	 */
 	public Users getUserLogged(HttpServletRequest request) {
 		Users user = null;
 		Object logged = request.getSession().getAttribute("login");

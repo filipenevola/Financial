@@ -195,13 +195,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- Quartz framework -->
-		<dependency>
-			<groupId>opensymphony</groupId>
-			<artifactId>quartz</artifactId>
-			<version>${quartz.version}</version>
-		</dependency>
-		<!-- Quartz dependency library -->
 		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
@@ -228,7 +221,6 @@
 		<finalName>f</finalName>
 	</build>
 	<properties>
-		<spring.version>2.5.6</spring.version>
-		<quartz.version>1.6.3</quartz.version>
+		<spring.version>3.0.5.RELEASE</spring.version>
 	</properties>
 </project>

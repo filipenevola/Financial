@@ -4,35 +4,28 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.filipenevola.dao.TypeOfPayDAO;
 import com.filipenevola.model.TypeOfPay;
 import com.filipenevola.model.Users;
 import com.filipenevola.util.Util;
 
 /**
- * TypeOfPay Business Delegate
- * 
  * @author Filipe Névola
  */
+@Service
 public class TypeOfPayService {
-	
+
+	@Autowired
 	private TypeOfPayDAO categoryDAO;
+	@Autowired
 	private Util util;
 
-	/**
-	 * Get all categorys
-	 * @return
-	 */
 	public List<TypeOfPay> getTypeOfPayList(Users user){
 		return categoryDAO.getTypeOfPays(user);
 	}
-	
-	/**
-	 * Create new TypeOfPay/TypeOfPays
-	 * @param data - json data from request
-	 * @return created categorys
-	 * @throws ParseException 
-	 */
 	public List<TypeOfPay> create(Object data, Users user) throws ParseException{		
         List<TypeOfPay> newTypeOfPays = new ArrayList<TypeOfPay>();		
 		List<TypeOfPay> list = util.getTypeOfPaysFromRequest(data);		
@@ -44,12 +37,6 @@ public class TypeOfPayService {
 	}
 	
 	
-	/**
-	 * Update category/categorys
-	 * @param data - json data from request
-	 * @return updated categorys
-	 * @throws ParseException 
-	 */
 	public List<TypeOfPay> update(Object data, Users user) throws ParseException{
 		
 		List<TypeOfPay> returnTypeOfPays = new ArrayList<TypeOfPay>();		
@@ -62,10 +49,6 @@ public class TypeOfPayService {
 		return returnTypeOfPays;
 	}
 	
-	/**
-	 * Delete category/categorys
-	 * @param data - json data from request
-	 */
 	public void delete(Object data){
 		
 		//it is an array - have to cast to array object
@@ -80,21 +63,5 @@ public class TypeOfPayService {
 		}
 	}
 	
-
-	/**
-	 * Spring use - DI
-	 * @param categoryDAO
-	 */
-	public void setTypeOfPayDAO(TypeOfPayDAO categoryDAO) {
-		this.categoryDAO = categoryDAO;
-	}
-
-	/**
-	 * Spring use - DI
-	 * @param util
-	 */
-	public void setUtil(Util util) {
-		this.util = util;
-	}
 	
 }
